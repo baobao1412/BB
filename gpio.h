@@ -38,6 +38,7 @@
 
 /*----------------*/
 
+#define DELAY_SHT1X ndelay(5)
 
 /* Set pullup/down */
 void gpio_pud(volatile uint32_t*gpio_map,uint8_t pin)
@@ -84,7 +85,7 @@ void set_mode(volatile uint32_t*_gpio_map,uint8_t _pin, uint8_t _mode)
 
  void write_pin(volatile uint32_t*gpio_map,uint8_t pin, uint8_t status)
 {
-    set_mode(gpio_map,pin, OUTPUT);
+    // set_mode(gpio_map,pin, OUTPUT);
     uint32_t* paddr;
     uint8_t shift = pin % 32;  
     if(status)
