@@ -5,12 +5,10 @@
  *7-11-2020
  *
 */
-#include <linux/io.h>
-#include <linux/delay.h>
-
-
 #ifndef _GPIO_
 #define _GPIO_
+#include <linux/io.h>
+
 
 /*--------*/
 #define LOW 0
@@ -34,83 +32,17 @@
 
 
 
+static volatile uint32_t *gpio_base = NULL;
 
 
 /*----------------*/
 
-#define DELAY_SHT1X ndelay(5)
 
-/* Set pullup/down */
-void gpio_pud(volatile uint32_t*gpio_map,uint8_t pin)
-{
-    uint32_t* paddr = gpio_map + GPPUD;
-    iowrite32(pin,paddr);
-}
+uint8_t addr_gpio(volatile uint32_t *_gpio);
+void gpio_pud(uint8_t pin);
+void set_mode(uint8_t _pin, uint8_t _mode);
+void write_pin(uint8_t pin, uint8_t status);
+uint8_t get_status_pin(uint8_t pin);
 
-// void set_gpio_pudclk(volatile uint32_t*_gpio_map,uint8_t pin, uint8_t on)
-// {
-
-//     volatile uint32_t* paddr = _gpio_map + GPPUDCLK0 + pin/32;
-//     uint8_t shift = pin % 32;
-//     iowrite32(paddr, ((on ? 1 : 0) << shift));
-
-// }
-
-
-
-// void gpio_set_pud(volatile uint32_t*_gpio_map,uint8_t pin, uint8_t pud)
-// {
-
-//     bcm2835_gpio_pud(_gpio_map,pud);
-//     udelay(100);
-//     set_gpio_pudclk(_gpio_map,pin, 1);
-//     udelay(100);
-//     bcm2835_gpio_pud(_gpio_map,GPIO_PUD_OFF);
-//     set_gpio_pudclk(_gpio_map,pin, 0);
-// }
-void set_mode(volatile uint32_t*_gpio_map,uint8_t _pin, uint8_t _mode)
-{   
-    uint32_t* paddr = _gpio_map + _pin/10;
-    uint8_t shift = (_pin % 10) * 3;    
-
-    if(_mode)
-    {   
-        iowrite32(1<<shift,paddr);
-    }
-    else
-    {   
-        iowrite32(0<<shift,paddr);
-    }
-}
-
- void write_pin(volatile uint32_t*gpio_map,uint8_t pin, uint8_t status)
-{
-    // set_mode(gpio_map,pin, OUTPUT);
-    uint32_t* paddr;
-    uint8_t shift = pin % 32;  
-    if(status)
-    {
-        paddr = gpio_map + GPSET0 + pin/32;
-        // iowrite32(0,paddr);
-        iowrite32(1<<shift,paddr);
-    }
-    else
-    {
-        paddr = gpio_map + GPCLR0 + pin/32;
-        // iowrite32(0,paddr);
-        iowrite32(1<<shift,paddr);
-    }
-}
-
- uint8_t get_status_pin(volatile uint32_t*gpio_map,uint8_t pin)
-{
-    set_mode(gpio_map,pin,INPUT);
-    uint32_t* paddr = gpio_map + GPLVE0 + pin/32;
-    uint8_t shift = pin % 32;
-    uint32_t value = ioread32(paddr);
-    printk("bcm2835_peri_write_nb paddr %p, value %32X\n",
-                paddr, value);
-    return ((value) & (1 << shift)) ? HIGH : LOW;
-}
 
 #endif
