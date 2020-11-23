@@ -12,7 +12,7 @@
 
 
 
-#define DELAY_SHT1X mdelay(5000)
+#define DELAY_SHT1X ndelay(3)
 
 #define CLOCK_HIGH write_pin(_clockPin,HIGH)
 #define CLOCK_LOW write_pin(_clockPin,LOW)
@@ -27,9 +27,9 @@
 
 //Functions
 
-extern void init_sht1x(void);
-extern void transmission_start(void);
-extern void sht1x_rs(void);
-
+void init_sht1x(void);
+void transmission_start(void);
+void sht1x_rs(void);
+void send_command(uint8_t _cmd);
 
 #endif

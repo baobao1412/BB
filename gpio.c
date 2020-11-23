@@ -5,16 +5,14 @@ uint8_t addr_gpio(volatile uint32_t *_gpio)
 {
     gpio_base = _gpio;
 
-    // if()
-    // {
-    //     return -1;
-    // }
-    // else
-    // {
-    //     return 1;
-    // }
-    
-    return 0;
+    if(gpio_base)
+    {
+        return -1;// Failed
+    }
+    else
+    {
+        return 1;//OK
+    }
 }
 
 /* Set pullup/down */
@@ -63,8 +61,8 @@ void set_mode(uint8_t _pin, uint8_t _mode)
     uint32_t* paddr = gpio_base + GPLVE0 + pin/32;
     uint8_t shift = pin % 32;
     uint32_t value = ioread32(paddr);
-    printk("bcm2835_peri_write_nb paddr %p, value %32X\n",
-                paddr, value);
+    // printk("bcm2835_peri_write_nb paddr %p, value %32X\n",
+    //             paddr, value);
     return ((value) & (1 << shift)) ? HIGH : LOW;
 }
 
