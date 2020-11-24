@@ -20,7 +20,7 @@
 #define GPIO_PUD_OFF 0
 
 /*-----Define address--- */
-#define GPIO_BASE 0x3f200000
+#define _GPIO_BASE 0x3f200000
 #define GPSET0 7
 #define GPSET1 8
 #define GPCLR0 10

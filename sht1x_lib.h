@@ -9,10 +9,11 @@
 #define _clockPin 17
 
 
+#define LOW 0
+#define HIGH 1
 
 
-
-#define DELAY_SHT1X ndelay(3)
+#define DELAY_SHT1X udelay(10)
 
 #define CLOCK_HIGH write_pin(_clockPin,HIGH)
 #define CLOCK_LOW write_pin(_clockPin,LOW)
@@ -21,7 +22,6 @@
 #define DATA_LOW write_pin(_dataPin,LOW)
 
 #define GET_DATA get_status_pin(_dataPin)
-#define GET_DATA_CLOCK get_status_pin(_clockPin)
                             
 
 
@@ -31,5 +31,6 @@ void init_sht1x(void);
 void transmission_start(void);
 void sht1x_rs(void);
 void send_command(uint8_t _cmd);
+uint16_t read_data(void);
 
 #endif
