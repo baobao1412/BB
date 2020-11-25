@@ -1,5 +1,3 @@
-
-
 #include "gpio.h"
 uint8_t addr_gpio(volatile uint32_t *_gpio)
 {
@@ -7,11 +5,11 @@ uint8_t addr_gpio(volatile uint32_t *_gpio)
 
     if(gpio_base)
     {
-        return -1;// Failed
+        return 1;//OK
     }
     else
     {
-        return 1;//OK
+        return 0;// Failed
     }
 }
 
@@ -31,15 +29,6 @@ void set_mode(uint8_t _pin, uint8_t _mode)
     uint32_t value = ioread32(paddr);
     value = (value & (~mask)) | (mode_set & mask);
     iowrite32(value,paddr);
-
-    // if(_mode)
-    // {   
-    //     iowrite32((value|(1<<shift)),paddr);
-    // }
-    // else
-    // {   
-    //     iowrite32((value|(0<<shift)),paddr);
-    // }
 }
 
  void write_pin(uint8_t pin, uint8_t status)
@@ -80,8 +69,8 @@ uint8_t get_status_pin(uint8_t pin)
     uint32_t* paddr = gpio_base + GPLVE0 + pin/32;
     uint8_t shift = pin % 32;
     uint32_t value = ioread32(paddr);
-    printk("bcm2835_peri_write_nb paddr %p, value %32X\n",
-                paddr, value);
+    // printk("bcm2835_peri_write_nb paddr %p, value %32X\n",
+    //             paddr, value);
     return ((value) & (1 << shift)) ? HIGH : LOW;
 }
 
